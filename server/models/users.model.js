@@ -6,6 +6,13 @@ const user_schema = new mongoose.Schema( {
         type: String,
         required: [true, "display name is required"],
     },
+    username: {
+        type: String,
+        required: [true,"username required"],
+        unique: true,
+        lowercase: true,
+        trim: true
+    },
     wallet_address : {
         type: String,
         required: [true, "address is required"],
@@ -62,6 +69,7 @@ user_schema.methods.generate_access_token = async function () {
     const token = await jwt.sign( {                                            //encoding
         _id : this._id ,                                         //payload or data needs to be in object 
         display_name : this.display_name,
+        username: this.username,
         email : this.email,
         wallet_address : this.wallet_address,
         
