@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link as="style"
+        href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Spline+Sans%3Awght%40400%3B500%3B700"
+        onload="this.rel='stylesheet'" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <title>Stitch Design</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+        :root {
+        --primary-color: #4d5280;
+        --background-color: #0d0330;
+        --secondary-background-color: #140432;
+        --tertiary-background-color: #2b2757;
+        --text-primary-color: #FFFFFF;
+        --text-secondary-color: #9694aa;
+        --border-color: #3e3f6e;
+      }
+    </style>
+</head>
+
+<body class="bg-[var(--background-color)]" style='font-family: "Spline Sans", "Noto Sans", sans-serif;'>
+    <div class="relative flex size-full min-h-screen flex-col dark group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            <header class="w-full border-b border-[var(--border-color)] px-6">
+                <div class="mx-auto flex h-20 max-w-[1200px] items-center justify-between">
+                    <a class="flex items-center gap-2" href="#">
+                        <h1 class="text-2xl font-bold text-[var(--text-primary-color)]">StoryChain</h1>
+                    </a>
+                    <nav class="hidden items-center gap-2 lg:flex">
+                        <a class="flex items-center gap-2 rounded-lg bg-[var(--tertiary-background-color)] px-4 py-2 text-[var(--text-primary-color)] font-semibold"
+                            href="#">
+                            <span class="material-symbols-outlined">home</span>
+                            <span>Home</span>
+                        </a>
+                        <a class="flex items-center gap-2 rounded-lg px-4 py-2 text-[var(--text-secondary-color)] hover:bg-[var(--tertiary-background-color)] hover:text-[var(--text-primary-color)] font-medium transition-colors"
+                            href="#">
+                            <span class="material-symbols-outlined">search</span>
+                            <span>Explore</span>
+                        </a>
+                        <a class="flex items-center gap-2 rounded-lg px-4 py-2 text-[var(--text-secondary-color)] hover:bg-[var(--tertiary-background-color)] hover:text-[var(--text-primary-color)] font-medium transition-colors"
+                            href="#">
+                            <span class="material-symbols-outlined">bookmark</span>
+                            <span>My Library</span>
+                        </a>
+                        <a class="flex items-center gap-2 rounded-lg px-4 py-2 text-[var(--text-secondary-color)] hover:bg-[var(--tertiary-background-color)] hover:text-[var(--text-primary-color)] font-medium transition-colors"
+                            href="#">
+                            <span class="material-symbols-outlined">notifications</span>
+                            <span>Notifications</span>
+                        </a>
+                    </nav>
+                    <div class="flex items-center gap-4">
+                        <button
+                            class="hidden min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[var(--primary-color)] text-[var(--text-primary-color)] text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#3e3f6e] transition-colors sm:flex">
+                            <span class="truncate">Write a Story</span>
+                        </button>
+                        <div class="flex items-center gap-3">
+                            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCVZrzm77i0z3MslBGNB7vCPHmMB_evZy3yDeqQxhrNpIXZ19VaXUtslDRs4NR_HoUFhdIG2Msk2nWJccpSdQ53IYJtF_cHd4XknAISSCbQqoexuRzOGmoXMgnP1Mvqq56FLd-FI1asPniaooVGf-ibP8f98f3EqjEdwGsHuUJ706-Mx-nrE49ZWKACm98cy-Fm4TbvhyDQyViN3yGa0z5ir8FE9rTgmuFTLVdh6cV_EOOZDHfxj-vgvrLUlmAFXRyZOK3SQ0wQ");'>
+                            </div>
+                            <span
+                                class="hidden text-[var(--text-primary-color)] text-base font-bold lg:inline">Olivia</span>
+                        </div>
+                        <button class="p-2 lg:hidden">
+                            <span class="material-symbols-outlined text-[var(--text-primary-color)]">menu</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            <main class="flex-1">
+                <div class="p-6 md:p-8">
+                    <div class="mx-auto max-w-[960px]">
+                        <div class="flex items-center gap-2 text-[var(--text-secondary-color)] text-sm mb-6">
+                            <a class="hover:text-[var(--text-primary-color)] transition-colors" href="#">Explore</a>
+                            <span>/</span>
+                            <span class="text-[var(--text-primary-color)] font-medium">The Enigma of Elysium</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                            <div class="md:col-span-1">
+                                <div class="aspect-[3/4] w-full rounded-lg overflow-hidden shadow-2xl shadow-black">
+                                    <img alt="Book Cover for The Enigma of Elysium" class="w-full h-full object-cover"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoF0eivxGyZ8YY9j6sg3hQyoyPIAPhXqqvgF0AV5SYXSP65A9rt-Kk89MMfWqr3VNhpPhOaSpf1uBTej7ibUtwWVZoH3LenpXmdjJc09ljA1fPVGDugDB79vJcPdocjy5DiVmotJ9EWtN6roIkFE7kz89wg2HIgoL0qtTbI-gQ8azPKZnzNZ9N46mFME6SpExVwUX4nJ4xUFWLxIhPybo6lYZEs4-g7mGyhricHIp0WyqaE0LVTiov9hovgiTbO0Ra6CrrR5ls" />
+                                </div>
+                            </div>
+                            <div class="md:col-span-2 flex flex-col justify-between">
+                                <div>
+                                    <p class="text-[var(--text-secondary-color)] text-sm font-medium mb-1">Fantasy</p>
+                                    <h1
+                                        class="text-[var(--text-primary-color)] text-4xl lg:text-5xl font-bold leading-tight mb-4">
+                                        The Enigma of Elysium</h1>
+                                    <p class="text-[var(--text-secondary-color)] text-base leading-relaxed mb-6">
+                                        In the mystical realm of Elysium, where magic intertwines with reality, a young
+                                        sorceress named Elara embarks on a perilous quest to uncover the truth behind a
+                                        looming darkness threatening to consume their world.
+                                    </p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <button
+                                        class="flex-1 flex items-center justify-center gap-2 min-w-[84px] cursor-pointer overflow-hidden rounded-lg h-12 px-5 bg-[var(--primary-color)] text-[var(--text-primary-color)] text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#3e3f6e] transition-colors">
+                                        <span class="material-symbols-outlined">play_arrow</span>
+                                        <span class="truncate">Start Reading</span>
+                                    </button>
+                                    <button
+                                        class="flex items-center justify-center gap-2 min-w-[84px] cursor-pointer overflow-hidden rounded-lg h-12 px-5 bg-[var(--tertiary-background-color)] text-[var(--text-primary-color)] text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-80 transition-colors">
+                                        <span class="material-symbols-outlined">bookmark_add</span>
+                                        <span>Save to Library</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-12">
+                            <section>
+                                <h2 class="text-[var(--text-primary-color)] text-2xl font-bold mb-4">Synopsis &amp;
+                                    Stats</h2>
+                                <p class="text-[var(--text-secondary-color)] text-base leading-relaxed mb-6">
+                                    Elysium, a land of enchantment, faces an impending doom. Elara, a sorceress, must
+                                    decipher ancient prophecies, traverse dangerous terrains, and battle powerful
+                                    adversaries to save her world. This tale of courage, magic, and self-discovery will
+                                    keep you spellbound.
+                                </p>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div
+                                        class="flex flex-col gap-2 rounded-lg p-6 bg-[var(--secondary-background-color)] border border-[var(--border-color)]">
+                                        <p class="text-[var(--text-secondary-color)] text-sm font-medium">Total Chapters
+                                        </p>
+                                        <p class="text-[var(--text-primary-color)] text-3xl font-bold">12</p>
+                                    </div>
+                                    <div
+                                        class="flex flex-col gap-2 rounded-lg p-6 bg-[var(--secondary-background-color)] border border-[var(--border-color)]">
+                                        <p class="text-[var(--text-secondary-color)] text-sm font-medium">Contributing
+                                            Writers</p>
+                                        <p class="text-[var(--text-primary-color)] text-3xl font-bold">8</p>
+                                    </div>
+                                    <div
+                                        class="flex flex-col gap-2 rounded-lg p-6 bg-[var(--secondary-background-color)] border border-[var(--border-color)]">
+                                        <p class="text-[var(--text-secondary-color)] text-sm font-medium">Status</p>
+                                        <p class="text-green-400 text-3xl font-bold">Ongoing</p>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <h2 class="text-[var(--text-primary-color)] text-2xl font-bold mb-4">Chapter List</h2>
+                                <div
+                                    class="overflow-hidden rounded-lg border border-[var(--border-color)] bg-[var(--secondary-background-color)]">
+                                    <div class="divide-y divide-[var(--border-color)]">
+                                        <div
+                                            class="grid grid-cols-12 px-4 py-3 bg-[#17215a] text-[var(--text-secondary-color)] text-sm font-bold uppercase tracking-wider">
+                                            <div class="col-span-1">#</div>
+                                            <div class="col-span-6">Chapter</div>
+                                            <div class="col-span-3">Winning Writer</div>
+                                            <div class="col-span-2 text-right">Votes</div>
+                                        </div>
+                                        <a class="grid grid-cols-12 items-center px-4 py-4 hover:bg-[var(--tertiary-background-color)] transition-colors duration-200"
+                                            href="#">
+                                            <div class="col-span-1 text-[var(--text-secondary-color)]">1</div>
+                                            <div class="col-span-6 text-[var(--text-primary-color)] font-medium">The
+                                                Prophecy Unveiled</div>
+                                            <div class="col-span-3 text-[var(--text-secondary-color)]">Liam Carter</div>
+                                            <div class="col-span-2 text-right text-[var(--text-secondary-color)]">256
+                                            </div>
+                                        </a>
+                                        <a class="grid grid-cols-12 items-center px-4 py-4 hover:bg-[var(--tertiary-background-color)] transition-colors duration-200"
+                                            href="#">
+                                            <div class="col-span-1 text-[var(--text-secondary-color)]">2</div>
+                                            <div class="col-span-6 text-[var(--text-primary-color)] font-medium">The
+                                                Journey Begins</div>
+                                            <div class="col-span-3 text-[var(--text-secondary-color)]">Sophia Bennett
+                                            </div>
+                                            <div class="col-span-2 text-right text-[var(--text-secondary-color)]">234
+                                            </div>
+                                        </a>
+                                        <a class="grid grid-cols-12 items-center px-4 py-4 hover:bg-[var(--tertiary-background-color)] transition-colors duration-200"
+                                            href="#">
+                                            <div class="col-span-1 text-[var(--text-secondary-color)]">3</div>
+                                            <div class="col-span-6 text-[var(--text-primary-color)] font-medium">
+                                                Whispers of the Ancients</div>
+                                            <div class="col-span-3 text-[var(--text-secondary-color)]">Ethan Walker
+                                            </div>
+                                            <div class="col-span-2 text-right text-[var(--text-secondary-color)]">212
+                                            </div>
+                                        </a>
+                                        <a class="grid grid-cols-12 items-center px-4 py-4 hover:bg-[var(--tertiary-background-color)] transition-colors duration-200"
+                                            href="#">
+                                            <div class="col-span-1 text-[var(--text-secondary-color)]">4</div>
+                                            <div class="col-span-6 text-[var(--text-primary-color)] font-medium">The
+                                                Enchanted Forest</div>
+                                            <div class="col-span-3 text-[var(--text-secondary-color)]">Ava Harper</div>
+                                            <div class="col-span-2 text-right text-[var(--text-secondary-color)]">198
+                                            </div>
+                                        </a>
+                                        <div class="px-4 py-3 text-center">
+                                            <button
+                                                class="text-[var(--primary-color)] font-semibold text-sm hover:underline">View
+                                                All Chapters</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <h2 class="text-[var(--text-primary-color)] text-2xl font-bold mb-4">Join the Story</h2>
+                                <div
+                                    class="rounded-lg border border-[var(--border-color)] bg-[var(--secondary-background-color)] p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                                    <div>
+                                        <p class="text-[var(--text-primary-color)] font-bold text-lg">Submissions are
+                                            now open for Chapter 13!</p>
+                                        <p class="text-[var(--text-secondary-color)] text-base mt-1">Help shape the
+                                            future of Elysium. Cast your vote or submit your own version of the next
+                                            chapter.</p>
+                                    </div>
+                                    <div class="flex gap-4 w-full md:w-auto">
+                                        <button
+                                            class="flex-1 flex items-center justify-center gap-2 min-w-[84px] cursor-pointer overflow-hidden rounded-lg h-12 px-5 bg-[var(--tertiary-background-color)] text-[var(--text-primary-color)] text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-80 transition-colors">
+                                            <span class="material-symbols-outlined">how_to_vote</span>
+                                            <span class="truncate">Cast Your Vote</span>
+                                        </button>
+                                        <button
+                                            class="flex-1 flex items-center justify-center gap-2 min-w-[84px] cursor-pointer overflow-hidden rounded-lg h-12 px-5 bg-[var(--primary-color)] text-[var(--text-primary-color)] text-base font-bold leading-normal tracking-[0.015em] hover:bg-[#3e3f6e] transition-colors">
+                                            <span class="material-symbols-outlined">edit</span>
+                                            <span class="truncate">Submit Story</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+</body>
+
+</html>

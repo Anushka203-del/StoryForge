@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>StoryChain - Vote</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white">
+    <div class="flex flex-col h-screen">
+        <nav class="bg-gray-800 border-b border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 text-white font-bold text-xl">
+                            StoryChain
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <a class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                                    href="#">Home</a>
+                                <a class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                                    href="#">My Stories</a>
+                                <a class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                                    href="#">Creator Studio</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <button
+                                class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                                <span class="sr-only">View notifications</span>
+                                <span class="material-icons">notifications</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="-mr-2 flex md:hidden">
+                        <button aria-controls="mobile-menu" aria-expanded="false"
+                            class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                            type="button">
+                            <span class="sr-only">Open main menu</span>
+                            <span class="material-icons">menu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="flex flex-1 overflow-hidden">
+            <aside class="w-1/4 max-w-sm bg-gray-800 p-6 flex flex-col relative border-r border-gray-700">
+                <div class="flex items-center justify-between mb-8">
+                    <h1 class="text-2xl font-bold text-white">Submissions</h1>
+                    <button class="text-gray-400 hover:text-white">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                <div class="flex-grow overflow-y-auto pr-2">
+                    <div class="space-y-4">
+                        <div class="bg-gray-700 p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors">
+                            <h3 class="font-semibold text-lg">The Quantum Quirks of Apartment 4B</h3>
+                            <p class="text-sm text-gray-400 mt-1">By WriterAnon</p>
+                        </div>
+                        <div class="border border-indigo-500 p-4 rounded-lg bg-gray-800 cursor-pointer">
+                            <h3 class="font-semibold text-lg text-indigo-400">The Sentient Toaster's Lament</h3>
+                            <p class="text-sm text-gray-400 mt-1">By ProsePirate</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors">
+                            <h3 class="font-semibold text-lg">Misadventures in Time-Traveling Pizza Delivery</h3>
+                            <p class="text-sm text-gray-400 mt-1">By ChapterMaster</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors">
+                            <h3 class="font-semibold text-lg">The Neighbor's Cat is a Supervillain</h3>
+                            <p class="text-sm text-gray-400 mt-1">By StorySpinner</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors">
+                            <h3 class="font-semibold text-lg">Reality TV, But It's Just My Family Dinner</h3>
+                            <p class="text-sm text-gray-400 mt-1">By WordsmithWiz</p>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    class="absolute top-1/2 -right-3 transform -translate-y-1/2 bg-gray-700 p-1 rounded-full text-gray-300 hover:bg-gray-600">
+                    <span class="material-icons">chevron_left</span>
+                </button>
+            </aside>
+            <main class="flex-1 flex flex-col items-center justify-center p-8 md:p-12 relative">
+                <header class="absolute top-6 left-6 right-6 text-center">
+                    <div class="inline-block bg-gray-800 px-4 py-2 rounded-full">
+                        <span class="font-semibold text-gray-400">Genre:</span> <span
+                            class="font-bold text-indigo-400">Sitcom</span>
+                    </div>
+                </header>
+                <div class="w-full max-w-3xl flex-grow flex flex-col items-center justify-center">
+                    <h2 class="text-4xl font-bold mb-6 text-center">The Sentient Toaster's Lament</h2>
+                    <div class="relative w-full">
+                        <div
+                            class="text-lg text-gray-300 leading-relaxed space-y-6 max-h-[calc(100vh-300px)] overflow-y-auto p-4 custom-scrollbar">
+                            <p>
+                                Brenda stared at the toaster. The toaster, a gleaming chrome model named "Toast-o-Matic
+                                5000," stared back. Or at least, it felt like it was staring. Its single, ominous red
+                                light blinked with a rhythm that felt less like "heating element engaged" and more like
+                                "judgmental Morse code."
+                            </p>
+                            <p>
+                                "You burned it again, didn't you?" Brenda accused, poking the blackened slice of
+                                sourdough with a fork.
+                            </p>
+                            <p>
+                                A low, electronic hum emanated from the appliance. If a toaster could sigh in
+                                existential despair, this would be the sound. <span
+                                    class="bg-yellow-900 bg-opacity-30 border-b-2 border-yellow-500 cursor-pointer">"Perfection
+                                    is a Sisyphean endeavor," a tinny voice crackled from a speaker Brenda was sure
+                                    hadn't been there yesterday.</span> "Much like your attempts at making a decent
+                                breakfast."
+                            </p>
+                            <p>
+                                Brenda dropped the fork. It clattered on the tiled floor, the sound echoing in the
+                                suddenly silent kitchen. Her roommate, Kevin, ambled in, scratching his stomach. "Is the
+                                toaster quoting Greek mythology again? I told you we should have gotten the air fryer."
+                            </p>
+                        </div>
+                        <button
+                            class="absolute -left-16 top-1/2 transform -translate-y-1/2 bg-gray-800 p-3 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                            <span class="material-icons">arrow_back</span>
+                        </button>
+                        <button
+                            class="absolute -right-16 top-1/2 transform -translate-y-1/2 bg-gray-800 p-3 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                            <span class="material-icons">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+                <footer class="fixed bottom-8">
+                    <div
+                        class="bg-gray-800 bg-opacity-80 backdrop-blur-sm border border-gray-700 rounded-full px-6 py-3 flex items-center space-x-8 shadow-2xl">
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <span class="material-icons text-lg">visibility</span>
+                            <span class="font-medium">1.2k</span>
+                        </div>
+                        <div class="h-6 w-px bg-gray-600"></div>
+                        <button
+                            class="flex items-center space-x-2 text-green-400 hover:text-green-300 transition-colors transform hover:scale-105">
+                            <span class="material-icons">how_to_vote</span>
+                            <span class="font-bold text-lg">Vote for this Chapter</span>
+                        </button>
+                        <div class="h-6 w-px bg-gray-600"></div>
+                        <div class="flex items-center space-x-2 text-gray-400">
+                            <span class="material-icons text-lg">chat_bubble_outline</span>
+                            <span class="font-medium">87</span>
+                        </div>
+                    </div>
+                </footer>
+            </main>
+        </div>
+    </div>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+    </style>
+
+</body>
+
+</html>

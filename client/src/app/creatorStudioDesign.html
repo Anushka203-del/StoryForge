@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Teko:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1E1E1E;
+            --bg-tertiary: #2A2A2A;
+            --text-primary: #EAEAEA;
+            --text-secondary: #B0B0B0;
+            --accent: #A855F7;
+            --accent-hover: #9333EA;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        .canvas-bg {
+            background-image: radial-gradient(var(--bg-tertiary) 1px, transparent 1px);
+            background-size: 24px 24px;
+            transition: transform 0.3s ease;
+        }
+        .story-block {
+            cursor: grab;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .story-block:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px var(--accent-hover);
+        }
+        .story-block:active {
+            cursor: grabbing;
+            transform: scale(0.98);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        .category-button {
+            transition: background-color 0.3s ease, letter-spacing 0.3s ease;
+        }
+        .category-button:hover {
+           letter-spacing: 0.5px;
+        }
+        .btn-primary {
+            @apply bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105;
+        }
+        .btn-secondary {
+            @apply bg-[var(--bg-tertiary)] hover:bg-[#3a3a3a] text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center space-x-2 transition-all duration-300 transform hover:scale-105;
+        }
+        .font-display {
+            font-family: 'Teko', sans-serif;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+<aside class="w-20 bg-black/50 flex flex-col items-center py-6 space-y-8 z-20">
+<div class="font-display text-3xl font-bold text-[var(--accent)]">CS</div>
+<nav class="flex flex-col items-center space-y-6">
+<button class="p-3 bg-[var(--bg-tertiary)] rounded-lg text-[var(--accent)] tooltip-container relative">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="tooltip absolute left-full ml-4 w-max px-2 py-1 bg-black/80 text-white text-xs rounded-md invisible opacity-0 transition-all duration-300">Dashboard</span>
+</button>
+<button class="p-3 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--accent)] transition-colors duration-200 tooltip-container relative">
+<span class="material-symbols-outlined">layers</span>
+<span class="tooltip absolute left-full ml-4 w-max px-2 py-1 bg-black/80 text-white text-xs rounded-md invisible opacity-0 transition-all duration-300">Blocks</span>
+</button>
+<button class="p-3 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--accent)] transition-colors duration-200 tooltip-container relative">
+<span class="material-symbols-outlined">biotech</span>
+<span class="tooltip absolute left-full ml-4 w-max px-2 py-1 bg-black/80 text-white text-xs rounded-md invisible opacity-0 transition-all duration-300">Canvas</span>
+</button>
+<button class="p-3 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--accent)] transition-colors duration-200 tooltip-container relative">
+<span class="material-symbols-outlined">save</span>
+<span class="tooltip absolute left-full ml-4 w-max px-2 py-1 bg-black/80 text-white text-xs rounded-md invisible opacity-0 transition-all duration-300">Saved</span>
+</button>
+</nav>
+<div class="mt-auto">
+<button class="p-3 rounded-full text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-white transition-colors duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<style>.tooltip-container:hover .tooltip { visibility: visible; opacity: 1; }</style>
+</aside>
+<main class="flex flex-1 overflow-hidden bg-[var(--bg-primary)]">
+<aside class="w-96 bg-[var(--bg-secondary)] p-6 flex flex-col space-y-4 border-r border-gray-800">
+<h2 class="font-display text-4xl font-semibold text-white tracking-wide">Story Blocks</h2>
+<div class="relative">
+<input class="w-full bg-[var(--bg-tertiary)] border border-gray-700 rounded-lg py-2 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]" placeholder="Search blocks..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-400">search</span>
+</div>
+<div class="flex-1 overflow-y-auto sidebar pr-2 space-y-4">
+<div>
+<button class="w-full flex justify-between items-center p-3 rounded-lg bg-red-900/30 text-white font-semibold category-button">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-red-400">person_4</span>
+<span>Characters</span>
+</div>
+<span class="material-symbols-outlined">expand_less</span>
+</button>
+<div class="mt-2 space-y-2">
+<div class="bg-[var(--bg-tertiary)] p-3 rounded-lg story-block border-l-4 border-red-500">
+<h3 class="font-bold text-red-300">Reluctant Hero</h3>
+<p class="text-sm text-gray-400">An ordinary person thrust into extraordinary circumstances.</p>
+</div>
+<div class="bg-[var(--bg-tertiary)] p-3 rounded-lg story-block border-l-4 border-red-500">
+<h3 class="font-bold text-red-300">Wise Mentor</h3>
+<p class="text-sm text-gray-400">A guide who provides wisdom and support to the hero.</p>
+</div>
+</div>
+</div>
+<div>
+<button class="w-full flex justify-between items-center p-3 rounded-lg bg-blue-900/30 text-white font-semibold category-button">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-blue-400">landscape</span>
+<span>Settings</span>
+</div>
+<span class="material-symbols-outlined">expand_less</span>
+</button>
+<div class="mt-2 space-y-2">
+<div class="bg-[var(--bg-tertiary)] p-3 rounded-lg story-block border-l-4 border-blue-500">
+<h3 class="font-bold text-blue-300">Floating Sky City</h3>
+<p class="text-sm text-gray-400">A metropolis built on floating islands, high above the clouds.</p>
+</div>
+</div>
+</div>
+<div>
+<button class="w-full flex justify-between items-center p-3 rounded-lg bg-yellow-900/30 text-white font-semibold category-button">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-yellow-400">change_history</span>
+<span>Plot Points</span>
+</div>
+<span class="material-symbols-outlined">expand_less</span>
+</button>
+<div class="mt-2 space-y-2">
+<div class="bg-[var(--bg-tertiary)] p-3 rounded-lg story-block border-l-4 border-yellow-500">
+<h3 class="font-bold text-yellow-300">The Discovery</h3>
+<p class="text-sm text-gray-400">Protagonist realizes their ordinary world is built on lies.</p>
+</div>
+<div class="bg-[var(--bg-tertiary)] p-3 rounded-lg story-block border-l-4 border-yellow-500">
+<h3 class="font-bold text-yellow-300">The Betrayal</h3>
+<p class="text-sm text-gray-400">A trusted ally reveals ulterior motives, shattering trust.</p>
+</div>
+</div>
+</div>
+<div>
+<button class="w-full flex justify-between items-center p-3 rounded-lg bg-orange-900/30 text-white font-semibold category-button">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-orange-400">swords</span>
+<span>Conflicts</span>
+</div>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+<div>
+<button class="w-full flex justify-between items-center p-3 rounded-lg bg-purple-900/30 text-white font-semibold category-button">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-purple-400">psychology</span>
+<span>Themes</span>
+</div>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+</div>
+<button class="btn-primary mt-4">
+<span class="material-symbols-outlined">add</span>
+<span>Add New Block</span>
+</button>
+</aside>
+<section class="flex-1 bg-[var(--bg-primary)] p-6 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-display text-4xl font-semibold text-white tracking-wide">Story Canvas</h2>
+<div class="flex items-center space-x-4">
+<button class="btn-secondary">
+<span class="material-symbols-outlined">grid_on</span>
+<span>Grid</span>
+</button>
+<button class="btn-secondary text-red-400 hover:bg-red-900/50">
+<span class="material-symbols-outlined">delete_sweep</span>
+<span>Clear All</span>
+</button>
+<button class="btn-primary">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span>Generate Chapter</span>
+</button>
+</div>
+</div>
+<div class="flex-1 border-2 border-dashed border-gray-800 rounded-lg p-4 canvas-bg relative overflow-hidden">
+<div class="absolute top-8 left-8 bg-black/30 backdrop-blur-sm border border-purple-500 rounded-lg p-4 shadow-lg w-full max-w-lg story-block">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-xs font-bold uppercase text-purple-400 tracking-widest">THEME</span>
+<h3 class="text-2xl font-bold text-white mt-1 font-display">Power Corrupts</h3>
+<p class="text-gray-300 mt-2">Exploration of how authority and influence change people, often for the worse. Even good intentions can lead to tyranny.</p>
+</div>
+<div class="flex flex-col space-y-2 ml-4">
+<button class="p-2 bg-gray-700/50 rounded-full hover:bg-gray-600/50 transition-colors"><span class="material-symbols-outlined text-sm">content_copy</span></button>
+<button class="p-2 bg-gray-700/50 rounded-full hover:bg-gray-600/50 transition-colors"><span class="material-symbols-outlined text-sm">settings</span></button>
+<button class="p-2 bg-red-800/50 rounded-full hover:bg-red-700/50 transition-colors"><span class="material-symbols-outlined text-sm">close</span></button>
+</div>
+</div>
+</div>
+<div class="absolute top-64 left-24 bg-black/30 backdrop-blur-sm border border-yellow-500 rounded-lg p-4 shadow-lg w-full max-w-md story-block">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-xs font-bold uppercase text-yellow-400 tracking-widest">PLOT POINT</span>
+<h3 class="text-xl font-bold text-white mt-1 font-display">The Discovery</h3>
+<p class="text-gray-300 mt-2">The protagonist realizes their ordinary world is built on extraordinary lies. Everything they believed is questioned.</p>
+<div class="mt-3 flex flex-wrap gap-2">
+<span class="text-xs bg-yellow-800/50 text-yellow-300 px-3 py-1 rounded-full">revelation</span>
+<span class="text-xs bg-yellow-800/50 text-yellow-300 px-3 py-1 rounded-full">turning-point</span>
+</div>
+</div>
+<div class="flex flex-col space-y-2 ml-4">
+<button class="p-2 bg-gray-700/50 rounded-full hover:bg-gray-600/50 transition-colors"><span class="material-symbols-outlined text-sm">close</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<aside class="w-96 bg-[var(--bg-secondary)] p-6 flex flex-col space-y-4 border-l border-gray-800">
+<div class="flex items-center space-x-2">
+<button class="flex-1 btn-primary">Preview</button>
+<button class="flex-1 btn-secondary">Saved</button>
+</div>
+<div class="bg-[var(--bg-primary)] rounded-lg p-6 flex-1 flex flex-col">
+<h3 class="font-display text-3xl font-semibold text-white tracking-wide mb-4">Story Preview</h3>
+<div class="text-gray-300 space-y-6 text-base leading-relaxed flex-1 overflow-y-auto sidebar pr-2">
+<p><strong class="text-purple-400 font-semibold block text-lg">Theme: Power Corrupts</strong> Exploration of how authority and influence change people, often for the worse. Even good intentions can lead to tyranny.</p>
+<p><strong class="text-yellow-400 font-semibold block text-lg">Plot Point: The Discovery</strong> The protagonist realizes their world is built on extraordinary lies. This combination creates a compelling narrative structure ready for chapter generation.</p>
+</div>
+<div class="mt-6 border-t border-gray-700 pt-4">
+<h4 class="font-display text-2xl font-semibold text-white mb-3">Metrics</h4>
+<div class="flex justify-between items-center text-gray-300">
+<span class="text-sm">Projected Word Count:</span>
+<span class="font-bold text-xl text-white font-display tracking-wider">~1200</span>
+</div>
+<div class="flex justify-between items-center text-gray-300 mt-2">
+<span class="text-sm">Est. Reading Time:</span>
+<span class="font-bold text-xl text-white font-display tracking-wider">~5 MIN</span>
+</div>
+</div>
+</div>
+</aside>
+</main>
+
+</body></html>

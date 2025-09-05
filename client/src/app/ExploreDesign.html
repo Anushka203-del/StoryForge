@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>StoryChain - Browse Abstracts</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+        }
+
+        .font-merriweather {
+            font-family: 'Merriweather', serif;
+        }
+
+        .card {
+            background-color: #2a2a2a;
+            border: 1px solid #444444;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #BB86FC;
+            color: #121212;
+        }
+
+        .btn-primary:hover {
+            background-color: #A166F3;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #BB86FC;
+            border: 2px solid #BB86FC;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(187, 134, 252, 0.1);
+        }
+
+        .profile-pic {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #BB86FC;
+            object-fit: cover;
+        }
+
+        .abstract-card .card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            filter: brightness(1.2);
+            z-index: 0;
+            transition: opacity 0.5s ease-in-out, filter 0.5s ease-in-out;
+        }
+
+        .abstract-card:hover .card-bg {
+            opacity: 0.25;
+            filter: brightness(1);
+        }
+
+        .abstract-card .card-content {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
+        }
+
+        .abstract-text-full {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .abstract-card:hover .abstract-text-full {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .card-content-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .abstract-snippet {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .abstract-card {
+            transition: transform 0.3s ease;
+        }
+
+        .abstract-card:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .book {
+            position: relative;
+            width: 260px;
+            height: 380px;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+
+        .book:hover {
+            transform: rotateY(-25deg);
+        }
+
+        .book-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-origin: left;
+            transition: transform 0.5s;
+            background-color: #262626;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .book:hover .book-cover {
+            transform: rotateY(-135deg);
+        }
+
+        .book-spine {
+            position: absolute;
+            width: 40px;
+            height: 100%;
+            background: #1a1a1a;
+            left: 0;
+            transform: rotateY(90deg) translateX(-20px);
+            transform-origin: center;
+            border-left: 1px solid #4a4a4a;
+            border-right: 1px solid #4a4a4a;
+        }
+
+        .book-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1E1E1E;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-y: auto;
+            transform: translateZ(-1px);
+        }
+
+        .book-cover-front {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            border: 1px solid #4a4a4a;
+            position: relative;
+        }
+
+        .book-cover-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .book-cover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.8));
+            z-index: 1;
+        }
+
+        .book-cover-front .text-white {
+            position: relative;
+            z-index: 2;
+        }
+
+        .book-spine-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            color: #E0E0E0;
+            font-size: 16px;
+            text-align: center;
+            font-family: 'Merriweather', serif;
+            padding: 10px 0;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <div class="min-h-screen p-4 sm:p-6 lg:p-8">
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold font-merriweather text-white">Story<span class="text-purple-400">Chain</span>
+            </h1>
+            <nav class="hidden md:flex items-center space-x-6 text-gray-300">
+                <a class="hover:text-white transition-colors" href="#">Home</a>
+                <a class="text-white font-semibold" href="#">Browse</a>
+                <a class="hover:text-white transition-colors" href="#">My Stories</a>
+                <a class="hover:text-white transition-colors" href="#">Creator Studio</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-400 hover:text-white transition-colors">
+                    <span class="material-icons">notifications</span>
+                </button>
+                <div class="flex items-center space-x-2 p-1 rounded-full bg-gray-800 border border-gray-700">
+                    <img alt="User profile picture" class="profile-pic"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAY3IZVqDB2xa9Lj5v598OUBf7HVAO7Y6tzGoeIbBlN7fvyF-0k81IXzFSxOF00IKaFYaRmO428K5MOTAn5njP16HNR1z8iTSqPnXwbBO2hr6-KsuFufLqFmYTZ0SABCkyLWsTuhHiv9I6ZVB0cVrVFw3nIuUp--RSYAkARPNwStt4btGrz4IkOgIEKX8CpeQsSu4LncebBk0lO8Pm_FRM6Wt7a2jcD22p4m6b6YDkzC7eW2EUlISZi18bRVXPUxGuv6zs19FrFCw" />
+                    <div class="pr-2 text-right">
+                        <p class="font-semibold text-sm text-white">Alex Ryder</p>
+                        <p class="text-xs text-purple-400">Voter Tier</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold font-merriweather mb-4 text-center text-purple-300">Abstracts of the Week
+                </h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-16">
+                    <div class="card abstract-card flex flex-col h-[450px]">
+                        <img alt="A futuristic city skyline with holographic projections" class="card-bg"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCimVRIIEJNiS2c_qJUgu_Gl1Xd6U6n70Udtc-ZQ0EUfAYXI0ZhqrEc7bNKRk0YHTgmJdY-4_zcAlChdoc04Y0BzngZWfir7v-1VSiBqF7ipn_F9I0W9rgN0HzhO3DXoKOcjv_ZlXU5OH9wowHxT2Mmnauv0wfTt614zMMPtCWd-31gA957V922hhqJAdB0oiHj-zOwTfgME7NcTjP-9h60zakmdUiaF7_1HknlqeBjXH9vzqWxShpAHydmDL1WfZuC0lcW01Q3QA" />
+                        <div class="p-6 flex flex-col flex-grow justify-end card-content">
+                            <div class="card-content-inner">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span
+                                        class="text-sm font-semibold bg-transparent text-red-200 px-3 py-1 rounded-full backdrop-blur-sm"></span>
+                                    <div class="text-right text-shadow">
+                                        <p class="text-sm text-gray-300">Ends in: 4d 12h</p>
+                                        <p class="text-sm text-gray-300">Writers: 34</p>
+                                    </div>
+                                </div>
+                                <h3 class="text-2xl font-bold font-merriweather mb-2 text-white text-shadow-lg">The Last
+                                    Echo</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4 abstract-snippet"> In a future
+                                    where memories can be extracted and replayed, a reclusive archivist discovers a
+                                    single, recurring echo in the memories of every person... </p>
+                                <div class="flex items-center space-x-2 text-gray-300 mb-4">
+                                    <span class="material-icons text-base">library_books</span>
+                                    <span class="text-sm font-medium">5 Books</span>
+                                </div>
+                                <div class="flex items-center gap-4 mb-4">
+                                    <button class="btn btn-secondary flex-1 text-sm py-2">
+                                        <span class="material-icons mr-2 text-base">visibility</span> Read </button>
+                                    <button class="btn btn-primary flex-1 text-sm py-2">
+                                        <span class="material-icons mr-2 text-base">edit</span> Submit Chapter </button>
+                                </div>
+                                <div class="abstract-text-full">
+                                    <p class="text-gray-200 leading-relaxed"> In a future where memories can be
+                                        extracted and replayed, a reclusive archivist discovers a single, recurring echo
+                                        in the memories of every person who has ever lived—a cryptic message from a
+                                        civilization that existed before time itself. As he pieces together the
+                                        fragments, he realizes he's not just uncovering the past, but activating a
+                                        protocol that could erase humanity's future. </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card abstract-card flex flex-col h-[450px]">
+                        <img alt="A magical city with glowing crystals and ornate architecture" class="card-bg"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAabgJcXMXQYykGF92ZeCUneNjQe1ELAzaqJb9odhPvApvxafaRxsgu7BMjDOPSlRxHYc-EQhbctTebWhtI0Na3fqcz6v64hva_Uf0vP3NccjNiOovmtl-Wk4LLrp2j3aVOvgAl4pTLwFJiEKDHaeohTj-Mp1XxaMdS_gDiIDcfIliMixAUXIvTvjfPCYXIyzDFOvh0FMLVYpNJwm79LFUpGHHrM6lq-oucV_VY4BNtcmLARbSRAhAL5rkm0WdFlr-b6nDnkQImvQ" />
+                        <div class="p-6 flex flex-col flex-grow justify-end card-content">
+                            <div class="card-content-inner">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span
+                                        class="text-sm font-semibold bg-transparent text-blue-200 px-3 py-1 rounded-full backdrop-blur-sm"></span>
+                                    <div class="text-right text-shadow">
+                                        <p class="text-sm text-gray-300">Ends in: 6d 8h</p>
+                                        <p class="text-sm text-gray-300">Writers: 52</p>
+                                    </div>
+                                </div>
+                                <h3 class="text-2xl font-bold font-merriweather mb-2 text-white">The Gilded Cage</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4 abstract-snippet"> In a city
+                                    powered by captured elemental spirits, a young artisan with the rare ability to hear
+                                    their silent screams must choose a side... </p>
+                                <div class="flex items-center space-x-2 text-gray-300 mb-4">
+                                    <span class="material-icons text-base">library_books</span>
+                                    <span class="text-sm font-medium">8 Books</span>
+                                </div>
+                                <div class="flex items-center gap-4 mb-4">
+                                    <button class="btn btn-secondary flex-1 text-sm py-2">
+                                        <span class="material-icons mr-2 text-base">visibility</span> Read </button>
+                                    <button class="btn btn-primary flex-1 text-sm py-2">
+                                        <span class="material-icons mr-2 text-base">edit</span> Submit Chapter </button>
+                                </div>
+                                <div class="abstract-text-full">
+                                    <p class="text-gray-200 leading-relaxed"> In a city powered by captured elemental
+                                        spirits, a young artisan with the rare ability to hear their silent screams must
+                                        choose a side. To free the spirits means plunging her prosperous home into
+                                        darkness and chaos. To keep them enslaved means silencing her own conscience and
+                                        becoming a part of the gilded cage she so desperately despises. The annual
+                                        Spirit Gala, a grand spectacle of power, is in one week. The choice must be
+                                        made. </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h2 class="text-2xl font-bold font-merriweather mb-8">Ongoing Stories</h2>
+                <div class="space-y-16">
+                    <div class="card !bg-[#1E1E1E] p-6 rounded-xl border border-gray-800">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold font-merriweather text-purple-300">Abstract: The Whispering Cog
+                            </h3>
+                            <p class="text-gray-400 mt-2 leading-relaxed max-w-4xl">In the smog-choked city of
+                                Aethelburg, renowned for its intricate clockwork marvels, a master clockmaker is found
+                                dead in his workshop, his heart replaced by a bizarre, ever-ticking gear. Elara, his
+                                estranged apprentice, is the sole heir to his legacy and the prime suspect. To clear her
+                                name, she must delve into the city's mechanical underbelly, uncovering a conspiracy that
+                                threatens to unwind the very fabric of time.</p>
+                        </div>
+                        <div class="border-t border-gray-700/50 pt-6">
+                            <h4 class="text-lg font-semibold text-gray-300 mb-6">Genre Branches</h4>
+                            <div class="flex flex-wrap justify-center lg:justify-start gap-x-12 gap-y-16">
+                                <div class="flex flex-col items-center">
+                                    <div class="relative">
+                                        <div class="book">
+                                            <div class="book-cover">
+                                                <div class="book-cover-front">
+                                                    <img alt="A dark and moody image of a vintage clock's inner workings."
+                                                        class="book-cover-image"
+                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC10uc0WgC3L-QNLbTvFiNBPtYtlqGNEndr4ZMtxEC61UVSIGUSj2K9M8AmfgC1e-2fwyjzpnC0vIHhYFU7PViVj2QIsOsvIDdO3kFxnhQOEeX2ooZhFto2FFw3bByt1ovHrDw_D1AyJiLNWk6uoANCvgEyHB2-POQ61ZCpU0rUETBnjhrySFtdOvZ9MS50U3686xzra3DGQtcnv1DnbywoY1MwRoLeEHBJw6VaLCyU9J-aR4UvV_pe0SpCnr61BKCidS5ZkrGrtw" />
+                                                    <div class="book-cover-overlay"></div>
+                                                    <div class="text-white">
+                                                        <h5 class="text-2xl font-bold font-merriweather">The
+                                                            Clockmaker's Secret</h5>
+                                                        <p class="text-sm text-gray-200 mt-2">Elara follows a trail of
+                                                            cryptic clues...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="book-spine">
+                                                <span class="book-spine-text">The Clockmaker's Secret</span>
+                                            </div>
+                                            <div class="book-content space-y-4">
+                                                <h5 class="text-lg font-bold font-merriweather text-white">The
+                                                    Clockmaker's Secret</h5>
+                                                <p class="text-sm text-gray-400 leading-relaxed">Elara follows a trail
+                                                    of cryptic clues left by her master, navigating shadowy guilds and
+                                                    high-society intrigue to expose a killer hiding in plain sight.</p>
+                                                <div class="mt-4 pt-4 border-t border-gray-700 flex items-center gap-4">
+                                                    <button class="btn btn-secondary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">visibility</span>
+                                                        Read</button>
+                                                    <button class="btn btn-primary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">add_circle</span>
+                                                        Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="absolute -top-3 -right-8 text-sm font-semibold bg-green-600/50 text-green-200 px-3 py-1 rounded-full inline-block backdrop-blur-sm">Mystery</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="relative">
+                                        <div class="book">
+                                            <div class="book-cover">
+                                                <div class="book-cover-front">
+                                                    <img alt="A detailed image of brass gears and cogs, representing steampunk technology."
+                                                        class="book-cover-image"
+                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBapGQr4_Ynyt-H8TY9s12ELlV3P6j1F-wzWPr06x1_yw5pzAGlQHTIMThf00Zq8sc_C4hjV76UjR_CXmrZdtnAKLkZTdoeB9oUuHr6gtn8rCxXerUEH_OH9p8bqBBFeO0rUM3CqakPFaEhepjo8S5M1aUD9P0_2QxCJPFSg7nCWx9tNcVKqqLmNeHjQ4y5ssIJ64I6k2RbIag3V12kcQo1FYV__5StnzyMout-uUKMcFcK4jEKT0EDWo7QeN5szkwMEZphxSJz_w" />
+                                                    <div class="book-cover-overlay"></div>
+                                                    <div class="text-white">
+                                                        <h5 class="text-2xl font-bold font-merriweather">Aethelburg's
+                                                            Brass Heart</h5>
+                                                        <p class="text-sm text-gray-200 mt-2">The ticking gear is an
+                                                            ancient power source...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="book-spine">
+                                                <span class="book-spine-text">Aethelburg's Brass Heart</span>
+                                            </div>
+                                            <div class="book-content space-y-4">
+                                                <h5 class="text-lg font-bold font-merriweather text-white">Aethelburg's
+                                                    Brass Heart</h5>
+                                                <p class="text-sm text-gray-400 leading-relaxed">The ticking gear is an
+                                                    ancient power source. Elara must master her clockwork skills to
+                                                    battle rogue automatons and a corporation vying to control the
+                                                    city's mechanical soul.</p>
+                                                <div class="mt-4 pt-4 border-t border-gray-700 flex items-center gap-4">
+                                                    <button class="btn btn-secondary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">visibility</span>
+                                                        Read</button>
+                                                    <button class="btn btn-primary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">add_circle</span>
+                                                        Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="absolute -top-3 -right-8 text-sm font-semibold bg-red-600/50 text-red-200 px-3 py-1 rounded-full inline-block backdrop-blur-sm">Steampunk</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card !bg-[#1E1E1E] p-6 rounded-xl border border-gray-800">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold font-merriweather text-purple-300">Abstract: The Lost Chart
+                            </h3>
+                            <p class="text-gray-400 mt-2 leading-relaxed max-w-4xl">A legendary sea chart, rumored to
+                                map a route to the Sunstone, a mythical artifact that can control the tides, is stolen.
+                                A disgraced naval captain, a daring pirate with a hidden agenda, and a guild
+                                cartographer's sharp-witted daughter form an uneasy alliance. They must race against a
+                                ruthless admiral to retrieve the chart, navigating treacherous waters, ancient sea
+                                monsters, and their own conflicting loyalties.</p>
+                        </div>
+                        <div class="border-t border-gray-700/50 pt-6">
+                            <h4 class="text-lg font-semibold text-gray-300 mb-6">Genre Branches</h4>
+                            <div class="flex flex-wrap justify-center lg:justify-start gap-x-16 gap-y-16">
+                                <div class="flex flex-col items-center">
+                                    <div class="relative">
+                                        <div class="book">
+                                            <div class="book-cover">
+                                                <div class="book-cover-front">
+                                                    <img alt="An old, weathered map spread out on a wooden table, suggesting adventure and discovery."
+                                                        class="book-cover-image"
+                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjoRaHIw2Zpl_3w8fkeP4p5un3YSJxVRRLZkhAd9hwwa_cbZ1OMEQnDRvvoZqyOdvr-kuJMauaW-KoDKsHKrk_IB7pQ6fuVhvmjXpx7gtOWCPIAuwCR_n1-fdQITKeFQL8Vr9x2p_P4qUS511jxIBfbYP6bNQhul_FN_NXHd_2JhZmnEZ6reGFnwdjeYTKJfmYo_hAX2Ty8GkV0l48mtOSpUVRH8VXIvkJLztlyUEpaMqAl4EDwp0XLwuK3NfP0Yv0kP2OCwDPdw" />
+                                                    <div class="book-cover-overlay"></div>
+                                                    <div class="text-white">
+                                                        <h5 class="text-2xl font-bold font-merriweather">Voyage of the
+                                                            Sunstone</h5>
+                                                        <p class="text-sm text-gray-200 mt-2">A high-seas chase filled
+                                                            with daring escapes...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="book-spine">
+                                                <span class="book-spine-text">Voyage of the Sunstone</span>
+                                            </div>
+                                            <div class="book-content space-y-4">
+                                                <h5 class="text-lg font-bold font-merriweather text-white">Voyage of the
+                                                    Sunstone</h5>
+                                                <p class="text-sm text-gray-400 leading-relaxed">A high-seas chase
+                                                    filled with daring escapes, island puzzles, and exhilarating ship
+                                                    battles as the crew races against time to find the artifact before
+                                                    the admiral.</p>
+                                                <div class="mt-4 pt-4 border-t border-gray-700 flex items-center gap-4">
+                                                    <button class="btn btn-secondary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">visibility</span>
+                                                        Read</button>
+                                                    <button class="btn btn-primary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">add_circle</span>
+                                                        Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="absolute -top-3 -right-8 text-sm font-semibold bg-yellow-600/50 text-yellow-200 px-3 py-1 rounded-full inline-block backdrop-blur-sm">Adventure</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="relative">
+                                        <div class="book">
+                                            <div class="book-cover">
+                                                <div class="book-cover-front">
+                                                    <img alt="A mythical sea creature, like a leviathan, rising from stormy seas."
+                                                        class="book-cover-image"
+                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2ohqY5p4FVN0kUe317H0HvSa2rEHcA5O6zqEJQJtdugBweoF_bsWrcjsw_hbAIILAVxL3yzaDRIq8mDr_ao1gPIFc-i5stQ3gKC_8x6oSbUid-BBjIcsfCxNp_COoBHTuhp7ajXQsoCHGAgo27U0yldOeWs66Nl1Gj44bGhqoZq7TyvD3uUvlSp442v-fWErPSxuQxzB5QAA2zBNdMpC7DznWqWrQ9QDJNffh7fSF5wZIzl2vF3n72iaeZXCa0hG2mNaYRqoxuw" />
+                                                    <div class="book-cover-overlay"></div>
+                                                    <div class="text-white">
+                                                        <h5 class="text-2xl font-bold font-merriweather">The Leviathan's
+                                                            Map</h5>
+                                                        <p class="text-sm text-gray-200 mt-2">The chart is a living
+                                                            entity...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="book-spine">
+                                                <span class="book-spine-text">The Leviathan's Map</span>
+                                            </div>
+                                            <div class="book-content space-y-4">
+                                                <h5 class="text-lg font-bold font-merriweather text-white">The
+                                                    Leviathan's Map</h5>
+                                                <p class="text-sm text-gray-400 leading-relaxed">The chart is a living
+                                                    entity, bonded to the sea itself. The crew must learn its secrets
+                                                    and bargain with ancient sea gods to prevent the admiral from
+                                                    enslaving the ocean.</p>
+                                                <div class="mt-4 pt-4 border-t border-gray-700 flex items-center gap-4">
+                                                    <button class="btn btn-secondary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">visibility</span>
+                                                        Read</button>
+                                                    <button class="btn btn-primary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">add_circle</span>
+                                                        Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="absolute -top-3 -right-8 text-sm font-semibold bg-blue-600/50 text-blue-200 px-3 py-1 rounded-full inline-block backdrop-blur-sm">Fantasy</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="relative">
+                                        <div class="book">
+                                            <div class="book-cover">
+                                                <div class="book-cover-front">
+                                                    <img alt="A dramatic seascape at sunset with two ships sailing close together."
+                                                        class="book-cover-image"
+                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwqNTDkFR8F4spiV3sm-ferp0vie7qautNIjz9qFoAYj1aGSwMXV_aTfen_HKk7H96nMq6v1ziOCbSyA0jnSYkm7vpMlezx5zTeCdpEVlo3XInw36e1uLmtEHAPiEdu2Ins78Tuy7cYfFSjzcod7SdUn1wn6Yma-dJKLaCPsAeYSAtW17fCnBStR-H1NAJ6bjNRZPR40tuFLPyyBN_4t9uuqU6dGtC1KPBhhYiGOuZH9A0Ru1faNQ-3Sz9t9qvTB-qyCjeBfiItg" />
+                                                    <div class="book-cover-overlay"></div>
+                                                    <div class="text-white">
+                                                        <h5 class="text-2xl font-bold font-merriweather">Tides of the
+                                                            Heart</h5>
+                                                        <p class="text-sm text-gray-200 mt-2">Forced together by
+                                                            circumstance...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="book-spine">
+                                                <span class="book-spine-text">Tides of the Heart</span>
+                                            </div>
+                                            <div class="book-content space-y-4">
+                                                <h5 class="text-lg font-bold font-merriweather text-white">Tides of the
+                                                    Heart</h5>
+                                                <p class="text-sm text-gray-400 leading-relaxed">Forced together by
+                                                    circumstance, the captain and the pirate find a magnetic attraction
+                                                    amidst the danger, their loyalties tested by blossoming love and
+                                                    hidden pasts.</p>
+                                                <div class="mt-4 pt-4 border-t border-gray-700 flex items-center gap-4">
+                                                    <button class="btn btn-secondary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">visibility</span>
+                                                        Read</button>
+                                                    <button class="btn btn-primary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">add_circle</span>
+                                                        Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="absolute -top-3 -right-8 text-sm font-semibold bg-rose-600/50 text-rose-200 px-3 py-1 rounded-full inline-block backdrop-blur-sm">Romance</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card !bg-[#1E1E1E] p-6 rounded-xl border border-gray-800">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold font-merriweather text-purple-300">Abstract: The Silent
+                                Frequency</h3>
+                            <p class="text-gray-400 mt-2 leading-relaxed max-w-4xl">A reclusive radio astronomer
+                                discovers an unnatural, silent frequency emanating from the void of space—a signal that
+                                nullifies all sound around its source. When a government agency tries to seize his
+                                research, he goes on the run. He soon finds the frequency isn't just silencing sound;
+                                it's a weapon being tested, capable of erasing memories and thoughts, and he is its next
+                                target.</p>
+                        </div>
+                        <div class="border-t border-gray-700/50 pt-6">
+                            <h4 class="text-lg font-semibold text-gray-300 mb-6">Genre Branches</h4>
+                            <div class="flex flex-wrap justify-center lg:justify-start gap-x-16 gap-y-16">
+                                <div class="flex flex-col items-center">
+                                    <div class="relative">
+                                        <div class="book">
+                                            <div class="book-cover">
+                                                <div class="book-cover-front">
+                                                    <img alt="A shadowy figure silhouetted against a backdrop of radio waves or static."
+                                                        class="book-cover-image"
+                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR_hIxD9_NW10oQSZudJ_K_0Ws0_l2Ts5nO2Mm7uPOfcUBpM1IOhWOOyq5UhHNjWk6CuJaHV-6UKgQ5RsNnilsEmbiYJQFC0pE1avJh9oFaTjHYs1848RHBFPmQuvbCcCtauGvhzbiTRSY0_M6NMGWtAxSJTjyoWE47Am1jYveYHdu-7DDsI9O-2mzjjDNBO9Uzq8WqK6qd0Glq_VRrA1Yzw_Iuggy4gsg4HXq2takopF26qzW0d_T06UyqQvrXPY3bmuGGxIg8g" />
+                                                    <div class="book-cover-overlay"></div>
+                                                    <div class="text-white">
+                                                        <h5 class="text-2xl font-bold font-merriweather">Echoes in the
+                                                            Static</h5>
+                                                        <p class="text-sm text-gray-200 mt-2">A cat-and-mouse game
+                                                            ensues...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="book-spine">
+                                                <span class="book-spine-text">Echoes in the Static</span>
+                                            </div>
+                                            <div class="book-content space-y-4">
+                                                <h5 class="text-lg font-bold font-merriweather text-white">Echoes in the
+                                                    Static</h5>
+                                                <p class="text-sm text-gray-400 leading-relaxed">A cat-and-mouse game
+                                                    ensues as the astronomer, aided by a conspiracy theorist, evades
+                                                    shadowy agents while trying to expose the truth before his mind is
+                                                    wiped clean.</p>
+                                                <div class="mt-4 pt-4 border-t border-gray-700 flex items-center gap-4">
+                                                    <button class="btn btn-secondary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">visibility</span>
+                                                        Read</button>
+                                                    <button class="btn btn-primary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">add_circle</span>
+                                                        Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="absolute -top-3 -right-8 text-sm font-semibold bg-indigo-600/50 text-indigo-200 px-3 py-1 rounded-full inline-block backdrop-blur-sm">Thriller</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="relative">
+                                        <div class="book">
+                                            <div class="book-cover">
+                                                <div class="book-cover-front">
+                                                    <img alt="An abstract image of space with nebulae and stars, with a central point of darkness."
+                                                        class="book-cover-image"
+                                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGplNP2rQJwRkaoFOsADiAcvcay0zlD__4ibnlBtt48LIxM7TB_kUO4EbjCmfDiRmnGQlH6p0qiZvjJontZ1ihFXXgvyQlvhqig3C-ER8QyUfuDVy6RKnuAkjt4sSlrbLqVyMVDME9BuMp4jX9RhrhpaOjRnWK6E8MIGmzq66k2jv9pmBceqbq2bTL6NH0djd0rhj54lD6mGeycv-5sJnYZlWaGNCu9n4WeLnaDiPknE1vURVUZb4m_h_KW7dRZQN-zNnyvw4d0Q" />
+                                                    <div class="book-cover-overlay"></div>
+                                                    <div class="text-white">
+                                                        <h5 class="text-2xl font-bold font-merriweather">The Void Signal
+                                                        </h5>
+                                                        <p class="text-sm text-gray-200 mt-2">The frequency is first
+                                                            contact...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="book-spine">
+                                                <span class="book-spine-text">The Void Signal</span>
+                                            </div>
+                                            <div class="book-content space-y-4">
+                                                <h5 class="text-lg font-bold font-merriweather text-white">The Void
+                                                    Signal</h5>
+                                                <p class="text-sm text-gray-400 leading-relaxed">The frequency is first
+                                                    contact from an alien race that communicates through silence. The
+                                                    astronomer must learn their language to stop an intergalactic war he
+                                                    accidentally started.</p>
+                                                <div class="mt-4 pt-4 border-t border-gray-700 flex items-center gap-4">
+                                                    <button class="btn btn-secondary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">visibility</span>
+                                                        Read</button>
+                                                    <button class="btn btn-primary text-sm flex-1"><span
+                                                            class="material-icons mr-2 text-base">add_circle</span>
+                                                        Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="absolute -top-3 -right-8 text-sm font-semibold bg-teal-600/50 text-teal-200 px-3 py-1 rounded-full inline-block backdrop-blur-sm">Sci-Fi</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

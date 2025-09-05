@@ -112,11 +112,66 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+
+.lavender {
+  --background: oklch(0.08 0.005 300); /* Almost black with a purple tint */
+  --foreground: oklch(0.85 0.03 280); /* Muted lavender-gray for primary text */
+  --card: oklch(0.15 0.01 290); /* Deep slate blue/dark violet navy for cards */
+  --card-foreground: oklch(0.85 0.03 280); /* Muted lavender-gray */
+  --popover: oklch(0.15 0.01 290); /* Same as card for consistency */
+  --popover-foreground: oklch(0.85 0.03 280); /* Muted lavender-gray */
+  --primary: oklch(0.35 0.06 270); /* Rich navy/Midnight blue for primary buttons/accents */
+  --primary-foreground: oklch(0.95 0.01 280); /* Very light, almost white for contrast */
+  --secondary: oklch(0.25 0.03 285); /* Dusty indigo for secondary elements */
+  --secondary-foreground: oklch(0.85 0.03 280); /* Muted lavender-gray */
+  --muted: oklch(0.20 0.02 295); /* A slightly lighter blackened purple for muted elements */
+  --muted-foreground: oklch(0.60 0.04 280); /* A darker muted lavender-gray for muted text */
+  --accent: oklch(0.35 0.06 270); /* Same as primary for accent consistency */
+  --accent-foreground: oklch(0.95 0.01 280); /* Very light, almost white */
+  --destructive: oklch(0.60 0.15 20); /* A warm, slightly desaturated red for destructive actions */
+  --border: oklch(0.25 0.02 285 / 0.7); /* Dusty indigo with some transparency */
+  --input: oklch(0.18 0.01 290); /* A slightly lighter shade for input fields */
+  --ring: oklch(0.40 0.05 275); /* A mid-tone indigo for focus rings */
+  --chart-1: oklch(0.60 0.15 20); /* Warm red for chart data */
+  --chart-2: oklch(0.55 0.12 100); /* A green/yellow for chart data */
+  --chart-3: oklch(0.70 0.10 200); /* A sky blue for chart data */
+  --chart-4: oklch(0.45 0.18 340); /* A deep rose/magenta for chart data */
+  --chart-5: oklch(0.65 0.13 50); /* A golden orange for chart data */
+  --sidebar: oklch(0.15 0.01 290); /* Consistent with card/popover */
+  --sidebar-foreground: oklch(0.85 0.03 280); /* Muted lavender-gray */
+  --sidebar-primary: oklch(0.35 0.06 270); /* Consistent with primary */
+  --sidebar-primary-foreground: oklch(0.95 0.01 280); /* Consistent with primary-foreground */
+  --sidebar-accent: oklch(0.25 0.03 285); /* Consistent with secondary */
+  --sidebar-accent-foreground: oklch(0.85 0.03 280); /* Muted lavender-gray */
+  --sidebar-border: oklch(0.25 0.02 285 / 0.7); /* Consistent with --border, a transparent dusty indigo */
+  --sidebar-ring: oklch(0.40 0.05 275); /* Consistent with --ring, a mid-tone indigo */
+  --almost-black-purple-tint: #0d0330;
+  --deep-slate-blue: #3e3f6e;
+  --rich-navy: #17215a;            
+  --muted-lavender-gray: #9694aa;
+  --midnight-blue: #2e376d;
+
+
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
+    margin: 0;
+    height: 100%;
+    font-family: 'Noto Sans', sans-serif;
     @apply bg-background text-foreground;
   }
+
+  /* h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  } */
+
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined', sans-serif;
+  }
+
+
 }
