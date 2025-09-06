@@ -3,6 +3,7 @@ const asyncHandler = require("../utils/async_handler");
 const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const jwt = require("jsonwebtoken");
+const Chapter = require("../models/chapter.model");
 
 const generateAccessRefreshToken = async (user_id) => {
   try {
@@ -194,6 +195,171 @@ const checkNameUniqueness = asyncHandler(async (req, res) => {
   }
 });
 
+const updateReadProgress = async (req, res) => {
+  const { bookId, chapterId, chapterNumber } = req.body;
+  const userId = req.user._id;
+
+  if (!bookId || !chapterId) {
+    return res.status(400).json({ message: "Book ID and Chapter ID are required." });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Find the book in the user's 'currently_reading' list
+    const bookInProgress = user.currently_reading.find(
+      (book) => book.book_id.toString() === bookId
+    );
+
+    if (bookInProgress) {
+      // If the user is already reading this book, update the last read chapter
+      await User.updateOne(
+        { _id: userId, "currently_reading.book_id": bookId },
+        {
+          $set: {
+            "currently_reading.$.last_read_chapter": chapterId,
+            "currently_reading.$.last_read_date": new Date(),
+          },
+          $inc: { "stats.chapters_read": 1 }
+        }
+      );
+    } else {
+      // If this is the first chapter of the book they're reading, add it to the list
+      await User.findByIdAndUpdate(userId, {
+        $push: {
+          currently_reading: {
+            book_id: bookId,
+            last_read_chapter: chapterId,
+          },
+        },
+        $inc: { "stats.chapters_read": 1 }
+      });
+    }
+
+    // Optional: Check if the book is now completed
+    const book = await Books.findById(bookId);
+    if (book.status === "Completed" && book.total_chapters === chapterNumber) {
+      await User.findByIdAndUpdate(userId, {
+        $inc: { "stats.books_completed": 1 },
+        // Move from currently_reading to book_shelf
+        $pull: { currently_reading: { book_id: bookId } },
+        $addToSet: { book_shelf: bookId } // Use $addToSet to avoid duplicates
+      });
+    }
+
+    res.status(200).json({ message: "Reading progress updated successfully." });
+
+  } catch (error) {
+    console.error("Error updating read progress:", error);
+    res.status(500).json({ message: "Server error while updating progress." });
+  }
+};
+
+const getUserDrafts = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const user = await User.findById(userId).select("writing_drafts");
+
+  if (!user) {
+    throw new ApiError(404, "User not found.");
+  }
+
+  const response = new ApiResponse(
+    200,
+    { drafts: user.writing_drafts },
+    "Drafts fetched successfully."
+  );
+
+  return res.status(200).json(response);
+});
+
+const saveOrUpdateDraft = asyncHandler(async (req, res) => {
+  const { draftId, bookId, title, content } = req.body;
+  const userId = req.user._id;
+
+  // A draft must be associated with a book
+  if (!bookId) {
+    throw new ApiError(400, "Book ID is required to save a draft.");
+  }
+
+  let response;
+
+  if (draftId) {
+    // --- UPDATE EXISTING DRAFT ---
+    const result = await User.updateOne(
+      { _id: userId, "writing_drafts._id": draftId },
+      {
+        $set: {
+          "writing_drafts.$.title": title,
+          "writing_drafts.$.content": content,
+          "writing_drafts.$.last_saved": new Date(),
+        }
+      }
+    );
+
+    if (result.nModified === 0) {
+      throw new ApiError(404, "Draft not found or user not authorized.");
+    }
+
+    response = new ApiResponse(
+      200,
+      { draftId },
+      "Draft updated successfully."
+    );
+
+  } else {
+    // --- CREATE NEW DRAFT ---
+    const newDraft = { book_id: bookId, title, content };
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $push: { writing_drafts: newDraft } },
+      { new: true, select: "writing_drafts" } // Return only the drafts array
+    );
+
+    // Get the ID of the draft we just created
+    const createdDraft = updatedUser.writing_drafts[updatedUser.writing_drafts.length - 1];
+
+    response = new ApiResponse(
+      201,
+      { draftId: createdDraft._id },
+      "Draft saved successfully."
+    );
+  }
+
+  return res.status(response.statusCode).json(response);
+});
+
+
+const voteChapter = asyncHandler(async (req, res) => {
+  const chapter_id = req.body.chapter_id
+  const user_id = req.user._id;
+  const user = await User.findById(user_id)
+  if (!user.voter) {
+    return res.status(400).json(new ApiResponse(400, {}, "User is not a voter"))
+  }
+  const chapter = await Chapter.findById(chapter_id);
+  chapter.votes = chapter.votes + 1;
+  user.voted_chapters.push(chapter_id);
+  chapter.save();
+  user.save();
+  return res.status(200).json(new ApiResponse(200, {}, "Vote Casted"))
+})
+
+const addToLibrary = asyncHandler(async (req, res) => {
+  const user_id = req.user._id;
+  const book_id = req.body.book_id;
+  const user = await User.findById(user_id);
+  user.library.push(book_id);
+  user.save();
+  return res.status(200).json(new ApiResponse(200, {}, "Book successfully added to library"))
+})
+
+
+
 module.exports = {
   register,
   login,
@@ -201,4 +367,10 @@ module.exports = {
   generateNewAccessToken,
   change_password,
   checkNameUniqueness,
+  updateReadProgress,
+  getUserDrafts,
+  saveOrUpdateDraft,
+  voteChapter,
+  addToLibrary
+
 };
